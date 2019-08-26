@@ -23,3 +23,31 @@ module.exports = (db) => {
   });
   return router;
 };
+
+app.get('/', function (req, res) {
+  res.send('GET request to the homepage')
+});
+
+app.post('/', function (req, res) {
+  res.send('POST request to the homepage')
+});
+
+app.get('/poll/:poll_unique_id', function (req, res) {
+  res.send('GET request to the homepage')
+});
+
+app.post('/poll/:poll_unique_id', function (req, res) {
+  res.send('POST request to the homepage')
+});
+
+app.get('/creator/:creator_id', function (req, res) {
+  res.send('GET request to the homepage')
+});
+
+app.post('/creator/:creator_id', function (req, res) {
+  res.send('POST request to the homepage')
+});
+
+app.delete('/creator/:creator_id', function (req, res) {
+  res.send('POST request to the homepage')
+});

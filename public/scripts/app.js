@@ -10,7 +10,7 @@ $(() => {
     for (let user of users) {
       $("<div>").text(user.name).appendTo($("body"));
     }
-  });
+  }).catch(err => console.error('Error:', err.stack));
 
   // takes standard UX time and converts to easily readable format
   const timeDifference = function(current, previous) {
@@ -50,8 +50,23 @@ $(() => {
   };
   exports.timeDifference = timeDifference;
 
-  //gets questions for a poll
+  //gets a poll from poll_unique_id or creator_id
   const getPoll = function(pollId) {
+    const queryString = `
+      SELECT polls.*
+        FROM polls
+        WHERE creator_id = $1
+          OR poll_unique_id = $1;`;
+
+    const values = [pollId];
+    return db.query(queryString, values)
+      .then(res => res.rows)
+      .catch(err => console.error('Error:', err.stack));
+  };
+  exports.getPoll = getPoll;
+
+  //gets questions for a poll
+  const getPollQuestions = function(pollId) {
     const queryString = `
       SELECT polls.created_at, poll.closes_at, questions.title, questions.description, questions.times_answered, choices.title, choices.description, choices.total_score, voters.name
       FROM polls
@@ -59,6 +74,7 @@ $(() => {
       JOIN choices ON questions.id = question_id
       JOIN voters ON questions.id = question_id 
       WHERE creator_id = $1
+        OR poll_unique_id = $1
       GROUP BY questions.id
       ORDER BY questions.id;`;
 
@@ -67,7 +83,7 @@ $(() => {
       .then(res => res.rows)
       .catch(err => console.error('Error:', err.stack));
   };
-  exports.getPoll = getPoll;
+  exports.getPollQuestions = getPollQuestions;
   
   // creates random 6-character key
   const generateUid = function() {

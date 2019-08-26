@@ -1,17 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Home Page</title>
-
+    <title>JD Poll</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/uikit.min.css" type="text/css" />
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
 
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
+    <script type="text/javascript" src="/scripts/uikit.min.js"></script>
+    <script type="text/javascript" src="/scripts/uikit-icons.min.js"></script>
   </head>
 
   <body>
-    <h1>Hello World!</h1>
+    <header>
+      SIMPLE JD POLL
+    </header>
+    <main class="main-container">
+      <section class="question-container">
+        <form class="question-form">
+          <div class="uk-margin" id="questions">
+            <input class="uk-input main-question" type="text" placeholder="What is your question?">
+            <input class="uk-input choice" type="text" placeholder="Choice #1">
+            <input class="uk-input choice description" type="text" placeholder="Enter an optional description">
+            <input class="uk-input choice" type="text" placeholder="Choice #2">
+            <input class="uk-input choice description" type="text" placeholder="Enter an optional description">
+          </div>
+          <div class="questions-footer uk-form-controls">
+            <input class="uk-checkbox" type="checkbox"> Track voter names <br>
+            <input class="uk-checkbox" type="checkbox"> Enable comments <br>
+            <br>
+            <input class="uk-input email" type="text" placeholder="What is your email?">
+          </div>
+        </form>
+      </section>
+      <section class="poll-container">
+      </section>
+    </main>
+    <section class="comments-container">
+        COMMENTS
+    </section>
   </body>
 </html>

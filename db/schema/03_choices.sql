@@ -3,5 +3,8 @@ CREATE TABLE choices (
   id SERIAL PRIMARY KEY NOT NULL,
   title VARCHAR(255) NOT NULL,
   description TEXT,
-  question_id INTEGER REFERENCES questions(id) NOT NULL
+  question_id INTEGER REFERENCES questions(id) NOT NULL,
+  total_score INTEGER DEFAULT 0
 );
+
+-- 3

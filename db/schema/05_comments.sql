@@ -4,5 +4,7 @@ CREATE TABLE comments(
   poll_id INTEGER REFERENCES polls(id) NOT NULL,
   name VARCHAR(255) NOT NULL,
   comment_text TEXT,
-  created_at TIMESTAMP
+  created_at TIMESTAMP NOT NULL DEFAULT Now()
 );
+
+-- 4

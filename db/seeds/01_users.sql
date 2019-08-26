@@ -13,3 +13,6 @@ VALUES (1 , 5, 'Does 5 seem reasonable?', 1), (2, 20, 'Does 20 seem reasonable?'
 
 INSERT INTO comments (poll_id, name, comment_text)
 VALUES (1, 'Devon Blake', 'What a fascinating question!');
+
+INSERT INTO voters (id, name, question_id)
+VALUES (1, 'Devon Blake', 1), (2, 'John Webster', 1), (3, 'Pencil Sharpener', 1);

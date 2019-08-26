@@ -1,0 +1,85 @@
+html {
+  background-color: #4287f5;
+}
+
+header {
+  color: #ffffff;
+  font-family: Helvetica;
+  font-size: 48px;
+  font-weight: 1000;
+  line-height: 0.69;
+  margin: 0;
+  padding-top: 50px;
+  text-align: center;
+}
+
+body { 
+  width: 90%;
+  margin: auto;
+  padding: 0;
+  max-width: 1024px;
+}
+
+.main-container {
+  background-color: #ffffff;
+  border-radius: 15px;
+}
+
+.question-container {
+  width: 95%;
+  margin: auto;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  font-size: 24px;
+}
+
+.main-question {
+  border: none;
+  border-bottom: solid #ababab 4px;
+  margin-bottom: 1em;
+}
+
+.choice {
+  border: none;
+  border-bottom: solid #ababab 2px;
+  width: 70%;
+}
+
+.description {
+  border: none;
+  margin-left: 1em;
+  font-size: 18px; 
+}
+
+.poll-container {
+  width: 95%;
+  margin: auto;
+}
+
+.email {
+  font-size: 18px;
+  border: 0;
+  border-bottom: solid #ababab 2px;
+  width: 70%;
+}
+
+.questions-footer {
+  font-size: 18px;
+}
+
+.comments-container {
+  margin: auto;
+  margin-top: 0.5em;
+  padding-bottom: 1em;
+  padding-top: 1em;
+  padding-left: 1em;
+  font-size: 24px;
+  background-color: #ffffff;
+  border-radius: 15px;
+}
+
+/* Poll Styling */
+
+.uk-card-default { 
+
+}

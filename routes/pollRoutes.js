@@ -103,5 +103,32 @@ module.exports = (db) => {
       });
   });
 
+  /* router.get("/:pollId", (req, res, next) => {
+    const pollId = req.params.pollId;
+    checkIfAdmin(pollId)
+      .then((res) => {
+        if (res.length === 0) {
+          console.log('did not find admin');
+          next();
+        } else {
+          console.log('found admin');
+          getPoll(pollId)
+            .then(data => {
+              const pID = data.rows[0].id;
+              const creatorId = data.rows[0].creator_id;
+              getAnswers(pID)
+                .then(aData => {
+                  const answers = aData.rows;
+                  let templateVars = {answers, creatorId};
+                  console.log(templateVars);
+                  res.render('vote', templateVars);
+                })
+                .catch(err => console.error('Error:', err.stack));
+            });
+        }
+      });
+  }); */
+
+
   return router;
 };

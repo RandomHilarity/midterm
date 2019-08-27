@@ -54,11 +54,21 @@ exports.timeDifference = timeDifference;
 
 const getPoll = function(pollId) {
   const queryString = `
-      SELECT polls.*
+      SELECT 
+          poll_unique_id,
+          creator_id,
+          creator_email,
+          created_at,
+          closes_at,
+          comments_active,
+          track_voter name.
+          question,
+          question_description
         FROM polls
-        WHERE poll_unique_id = $1;`;
-
+        WHERE poll_unique_id = $1
+          OR creator_id =$1;`;
   const values = [pollId];
+  
   return db.query(queryString, values)
     .then(res => res.rows)
     .catch(err => console.error('Error:', err.stack));

@@ -7,7 +7,9 @@ CREATE TABLE polls (
   created_at TIMESTAMP DEFAULT Now(),
   closes_at TIMESTAMP,
   comments_active BOOLEAN DEFAULT FALSE,
-  track_voter_name BOOLEAN DEFAULT FALSE
+  track_voter_name BOOLEAN DEFAULT FALSE,
+  question VARCHAR(255) NOT NULL,
+  question_description VARCHAR(255)
 );
 
--- 5
+-- 10/5

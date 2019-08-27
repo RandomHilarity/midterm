@@ -2,5 +2,7 @@ DROP TABLE IF EXISTS voters CASCADE;
 CREATE TABLE voters (
   id SERIAL PRIMARY KEY NOT NULL,
   name VARCHAR(255) NOT NULL,
-  question_id INTEGER REFERENCES questions(id) NOT NULL
+  choice_id INTEGER REFERENCES choices(id) NOT NULL
 );
+
+-- 3/3

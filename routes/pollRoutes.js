@@ -1,5 +1,8 @@
+/* eslint-disable camelcase */
+/*eslint-env jquery, browser*/
+
 /*
- * All routes for Users are defined here
+ * All routes for polls are defined here
  * Since this file is loaded in server.js into api/users,
  *   these routes are mounted onto /users
  * See: https://expressjs.com/en/guide/using-middleware.html#middleware.router
@@ -16,56 +19,60 @@ module.exports = (db) => {
     res.render("vote");
   });
 
-  //check if poll exists for creator_id
-  const checkIfAdmin = function(pollId) {
+  //check if poll exists for poll_unique_id
+  const checkIfPoll = function(pollId) {
     const queryString = `
-      SELECT creator_id
+        SELECT poll_unique_id
+          FROM polls
+          WHERE poll_unique_id = $1;`;
+  
+    const values = [pollId];
+    return db.query(queryString, values)
+      .then(res => res.rows)
+      .catch(err => console.error('Error:', err.stack));
+  };
+
+  //check if poll exists for creator_id
+  const getAdminPoll = function(pollId) {
+    const queryString = `
+      SELECT
+          id, 
+          created_at,
+          closes_at,
+          comments_active,
+          track_voter_name,
+          question,
+          question_description
         FROM polls
         WHERE creator_id = $1`;
     const values = [pollId];
 
     return db.query(queryString, values)
       .then(res => {
-        console.log("doing the check in promise");
-        console.log(res.rows, " res.rows");
         return res.rows;
       })
-      .catch(err => console.error('Error:', err.stack));
-  };
-
-  //check if poll exists for poll_unique_id
-  const checkIfPoll = function(pollId) {
-    const queryString = `
-      SELECT poll_unique_id
-        FROM polls
-        WHERE poll_unique_id = $1;`;
-
-    const values = [pollId];
-    return db.query(queryString, values)
-      .then(res => res.rows)
       .catch(err => console.error('Error:', err.stack));
   };
 
   //get poll data
   const getPoll = function(pollId) {
     const queryString = `
-        SELECT 
-            poll_unique_id,
-            creator_id,
-            creator_email,
-            created_at,
-            closes_at,
-            comments_active,
-            track_voter name.
-            question,
-            question_description
-          FROM polls
-          WHERE poll_unique_id = $1
-            OR creator_id =$1;`;
+      SELECT
+          id, 
+          created_at,
+          closes_at,
+          comments_active,
+          track_voter_name,
+          question,
+          question_description
+        FROM polls
+        WHERE poll_unique_id = $1`;
     const values = [pollId];
-    
+
     return db.query(queryString, values)
-      .then(res => res.rows)
+      .then(res => {
+        return res.rows;
+      })
       .catch(err => console.error('Error:', err.stack));
   };
 
@@ -78,7 +85,7 @@ module.exports = (db) => {
             total_count
           FROM choices
           JOIN polls ON polls.id = choices.poll_id
-          WHERE poll_id = $1;`;
+          WHERE polls.id = $1;`;
     const values = [pollId];
     
     return db.query(queryString, values)
@@ -86,49 +93,69 @@ module.exports = (db) => {
       .catch(err => console.error('Error:', err.stack));
   };
 
+  //checks for creator_id and renders Admin version of page
   router.get('/:pollId', (req, res, next) => {
     const pollId = req.params.pollId;
     console.log(pollId, " pollId");
-    checkIfAdmin(pollId)
-      .then(res => {
-        if (res.length === 0) {
+    getAdminPoll(pollId)
+      .then(data => {
+        if (data.length === 0) {
           console.log("no admin found");
           next();
         } else {
+          const templateVars = {poll:{
+            created_at: data[0].created_at,
+            closes_at: data[0].closes_at,
+            comments_active: data[0].comments_active,
+            track_voter_name: data[0].track_voter_name,
+            question: data[0].question,
+            question_description: data[0].question_description
+          }};
           console.log("admin found");
-          console.log(res);
-          const templateVars = {};
-          res.render('vote', templateVars);
+          getAnswers(data[0].id)
+            .then(data => {
+              const dataObj = {answers: data};
+              const pollAnsObj = Object.assign(templateVars, dataObj);
+              console.log(pollAnsObj);
+              res.render('vote', pollAnsObj);
+            });
         }
       });
   });
 
-  /* router.get("/:pollId", (req, res, next) => {
+  // checks for poll_unique_id and renders Voter version of page
+  router.get('/:pollId', (req, res, next) => {
     const pollId = req.params.pollId;
-    checkIfAdmin(pollId)
-      .then((res) => {
-        if (res.length === 0) {
-          console.log('did not find admin');
+    console.log(pollId, " pollId");
+    getPoll(pollId)
+      .then(data => {
+        if (data.length === 0) {
+          console.log("no poll found");
           next();
         } else {
-          console.log('found admin');
-          getPoll(pollId)
+          const templateVars = {poll:{
+            created_at: data[0].created_at,
+            closes_at: data[0].closes_at,
+            comments_active: data[0].comments_active,
+            track_voter_name: data[0].track_voter_name,
+            question: data[0].question,
+            question_description: data[0].question_description
+          }};
+          console.log("admin found");
+          getAnswers(data[0].id)
             .then(data => {
-              const pID = data.rows[0].id;
-              const creatorId = data.rows[0].creator_id;
-              getAnswers(pID)
-                .then(aData => {
-                  const answers = aData.rows;
-                  let templateVars = {answers, creatorId};
-                  console.log(templateVars);
-                  res.render('vote', templateVars);
-                })
-                .catch(err => console.error('Error:', err.stack));
+              const dataObj = {answers: data};
+              const pollAnsObj = Object.assign(templateVars, dataObj);
+              res.render('vote', pollAnsObj);
             });
         }
       });
-  }); */
+  });
 
+  router.get('/:pollId', (req, res) => {
+    // get an error message or alert here
+    res.redirect('/');
+  });
 
   return router;
 };

@@ -61,7 +61,7 @@ const getPoll = function(pollId) {
           created_at,
           closes_at,
           comments_active,
-          track_voter name.
+          track_voter name,
           question,
           question_description
         FROM polls

@@ -21,23 +21,18 @@
     </header>
     <main class="main-container">
       <section class="question-container">
-        How much wood could a woodchuck chuck?
+        <%= poll.question %>
       </section>
       <section class="poll-container">
         <hr>
-        <ul class="uk-grid-small uk-child-width-1@s uk-text-left" uk-sortable="handle: .uk-card" uk-grid>
-          <li>
-            <div class="uk-card uk-card-default uk-card-body">Item 1</div>
+        <ul class="uk-grid-small uk-child-width-1@s uk-text-left" uk-sortable="handle: .uk-card" uk-grid id="choices">
+          <% for (answer of answers) { %>
+            <li>
+            <div class="uk-card uk-card-default uk-card-body"> <%= answer.answer %>
+              <p><%= answer.description %></p>
+            </div>
           </li>
-          <li>
-            <div class="uk-card uk-card-default uk-card-body">Item 2</div>
-          </li>
-          <li>
-            <div class="uk-card uk-card-default uk-card-body">Item 3</div>
-          </li>
-          <li>
-            <div class="uk-card uk-card-default uk-card-body">Item 4</div>
-          </li>
+          <% }; %>
         </ul>
         <hr>
         <button class="uk-button uk-button-primary" type="submit">Vote</button>

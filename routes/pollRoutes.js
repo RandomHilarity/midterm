@@ -163,8 +163,8 @@ module.exports = (db) => {
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;`;
     
     const queryParams = [
-      generateUid(),
-      generateUid(),
+      poll.userId,
+      poll.creatorId,
       poll.creator_email,
       poll.created_at,
       poll.closes_at,
@@ -194,6 +194,15 @@ module.exports = (db) => {
       .then(res => res.rows)
       .catch(err => console.error('query error', err.stack));
   };
+
+  router.post("/make", (req, res) => {
+    console.log('pressed button!');
+    console.log(req.body, " body");
+    let pollId = generateUid();
+    let creatorId = generateUid();
+
+  });
+  
 
   return router;
 };

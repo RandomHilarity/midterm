@@ -21,19 +21,19 @@
     </header>
     <main class="main-container">
       <section class="question-container">
-        <form class="question-form">
+        <form class="question-form" method="POST" action="/poll/make">
           <div class="uk-margin" id="questions">
-            <input class="uk-input main-question" type="text" placeholder="What is your question?" maxlength="200">
-            <input class="uk-input choice" type="text" placeholder="Choice #1" maxlength="200">
-            <input class="uk-input description" type="text" placeholder="Enter an optional description" maxlength="200">
-            <input class="uk-input choice" type="text" placeholder="Choice #2" maxlength="200">
-            <input class="uk-input description" type="text" placeholder="Enter an optional description" maxlength="200">
+            <input class="uk-input main-question" type="text" placeholder="What is your question?" maxlength="200" name="question">
+            <input class="uk-input choice" type="text" placeholder="Choice #1" maxlength="200" name="choice1">
+            <input class="uk-input description" type="text" placeholder="Enter an optional description" maxlength="200" name="choice1desc">
+            <input class="uk-input choice" type="text" placeholder="Choice #2" maxlength="200" name="choice2">
+            <input class="uk-input description" type="text" placeholder="Enter an optional description" maxlength="200" name="choice2desc">
           </div>
           <div class="questions-footer">
-            <input class="uk-checkbox" type="checkbox"> Track voter names <br>
-            <input class="uk-checkbox" type="checkbox"> Enable comments <br>
+            <input class="uk-checkbox" type="checkbox" name="trackVoterNames"> Track voter names <br>
+            <input class="uk-checkbox" type="checkbox" name="enableComments"> Enable comments <br>
             <br>
-            <input class="uk-input email" type="text" placeholder="What is your email?"><br>
+            <input class="uk-input email" type="text" placeholder="What is your email?" name="creatorEmail"><br>
             <button class="uk-button uk-button-primary" type="submit">Create Poll</button>
           </div>
         </form>

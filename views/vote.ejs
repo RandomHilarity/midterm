@@ -11,8 +11,8 @@
 
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
-    <script type="text/javascript" src="/scripts/uikit.min.js"></script>
-    <script type="text/javascript" src="/scripts/uikit-icons.min.js"></script>
+    <script type="text/javascript" src="/vendor/uikit.min.js"></script>
+    <script type="text/javascript" src="/vendor/uikit-icons.min.js"></script>
   </head>
 
   <body>
@@ -25,7 +25,7 @@
       </section>
       <section class="poll-container">
         <hr>
-        <ul class="uk-grid-small uk-child-width-1@s uk-text-left" uk-sortable="handle: .uk-card" uk-grid id="choices">
+        <ul class="uk-grid-small uk-child-width-1@s uk-text-left" uk-sortable="handle: .uk-card" uk-grid id="choices" data-uk-sortable>
           <% for (answer of answers) { %>
             <li>
             <div class="uk-card uk-card-default uk-card-body"> <%= answer.answer %>
@@ -35,7 +35,7 @@
           <% }; %>
         </ul>
         <hr>
-        <button class="uk-button uk-button-primary" type="submit">Vote</button>
+        <button class="uk-button uk-button-primary" type="submit" id="vote">Vote</button>
       </section>
     </main>
     <section class="comments-container">

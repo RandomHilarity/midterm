@@ -1,16 +1,4 @@
-/*eslint-env jquery*/
-
-const db = require("../../server");
-
-/* $(() => {
-  $.ajax({
-    method: "GET",
-    url: "/api/users"
-  }).done((users) => {
-    for (let user of users) {
-      $("<div>").text(user.name).appendTo($("body"));
-    }
-  }).catch(err => console.error('Error:', err.stack)); */
+/*eslint-env jquery, browser*/
 
 // takes standard UX time and converts to easily readable format
 const timeDifference = function(current, previous) {
@@ -48,112 +36,32 @@ const timeDifference = function(current, previous) {
     return `${timeElapsed} ${desc}`;
   }
 };
-exports.timeDifference = timeDifference;
 
-//gets a poll from poll_unique_id
+$(document).ready(function() {
+  $('#vote').click(function() {
+    
+    let indexes = [];
+       
+    $('.uk-sortable').find('li').each(function(i) {
+      console.log(li);
+      $(this).data("index", i);
+      indexes.push(i);
+    });
+    console.log(indexes, " 2");
+  });
+});
 
-const getPoll = function(pollId) {
-  const queryString = `
-      SELECT 
-          poll_unique_id,
-          creator_id,
-          creator_email,
-          created_at,
-          closes_at,
-          comments_active,
-          track_voter name,
-          question,
-          question_description
-        FROM polls
-        WHERE poll_unique_id = $1
-          OR creator_id =$1;`;
-  const values = [pollId];
-  
-  return db.query(queryString, values)
-    .then(res => res.rows)
-    .catch(err => console.error('Error:', err.stack));
-};
-exports.getPoll = getPoll;
-
-const checkIfAdmin = function(pollId) {
-  const queryString = `
-      SELECT polls.*
-        FROM polls
-        WHERE creator_id = $1`;
-
-  const values = [pollId];
-  return db.query(queryString, values)
-    .then(res => res.rows)
-    .catch(err => console.error('Error:', err.stack));
-};
-exports.checkIfAdmin = checkIfAdmin;
-
-//gets questions for a poll
-const getPollQuestions = function(pollId) {
-  const queryString = `
-      SELECT polls.created_at, poll.closes_at, questions.title, questions.description, questions.times_answered, choices.title, choices.description, choices.total_score, voters.name
-      FROM polls
-      JOIN questions ON poll.id = poll_id
-      JOIN choices ON questions.id = question_id
-      JOIN voters ON questions.id = question_id 
-      WHERE creator_id = $1
-        OR poll_unique_id = $1
-      GROUP BY questions.id
-      ORDER BY questions.id;`;
-
-  const values = [pollId];
-  return db.query(queryString, values)
-    .then(res => res.rows)
-    .catch(err => console.error('Error:', err.stack));
-};
-exports.getPollQuestions = getPollQuestions;
+//adds additional choice field if last choice is focused
+$(document).ready(function() {
+  let counter = 2;
+  $('#questions').on('focus', '.choice:last', function() {
+    counter++;
+    $('#questions').append($(`<input class="uk-input choice" type="text" placeholder="Choice #${counter}" maxlength="200">`).hide().fadeIn(1000));
+    $('#questions').append($(`<input class="uk-input description" type="text" placeholder="Enter an optional description" maxlength="200">`).hide().fadeIn(1000));
+  });
+});
   
 // creates random 6-character key
 const generateUid = function() {
   return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
 };
-console.log(generateUid());
-
-const createPoll = function(poll) {
-  const queryString = `INSERT INTO polls (
-      poll_unique_id,
-      creator_id,
-      creator_email,
-      created_at,
-      closes_at,
-      track_voter_name,
-      VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;`;
-    
-  const queryParams = [
-    generateUid(),
-    generateUid(),
-    poll.creator_email,
-    poll.created_at,
-    poll.closes_at,
-    poll.track_voter_name,
-  ];
-    
-  return db.query(queryString, queryParams)
-    .then(res => res.rows)
-    .catch(err => console.error('query error', err.stack));
-};
-exports.createPoll = createPoll;
-
-const makeVote = function(choiceId, choicePosition) {
-  const queryString = `
-      UPDATE choices
-        SET total_score = total_score + $2,
-          times_answered = times_answered + 1
-        WHERE choices.id = $1
-        RETURNING *;`;
-    
-  const queryParams = [
-    choiceId,
-    choicePosition
-  ];
-    
-  return db.query(queryString, queryParams)
-    .then(res => res.rows)
-    .catch(err => console.error('query error', err.stack));
-};
-exports.makeVote = makeVote;

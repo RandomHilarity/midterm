@@ -37,8 +37,7 @@ app.use("/poll", pollRoutes(db));
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
-  console.log("went to default");
-  res.render("index");
+  res.redirect("/poll/make");
 });
 
 app.listen(PORT, () => {

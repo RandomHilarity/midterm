@@ -14,23 +14,10 @@ const router  = express.Router();
 module.exports = (db) => {
 
   // temporary route to vote page
-  router.get("/", (req, res) => {
+  router.get("/make", (req, res) => {
     console.log('I got to / in pollRoutes');
-    res.render("vote");
+    res.render("index");
   });
-
-  //check if poll exists for poll_unique_id
-  const checkIfPoll = function(pollId) {
-    const queryString = `
-        SELECT poll_unique_id
-          FROM polls
-          WHERE poll_unique_id = $1;`;
-  
-    const values = [pollId];
-    return db.query(queryString, values)
-      .then(res => res.rows)
-      .catch(err => console.error('Error:', err.stack));
-  };
 
   //check if poll exists for creator_id
   const getAdminPoll = function(pollId) {
@@ -156,6 +143,57 @@ module.exports = (db) => {
     // get an error message or alert here
     res.redirect('/');
   });
+
+  // creates random 6-character key
+  const generateUid = function() {
+    return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
+  };
+
+  const makePoll = function(poll) {
+    const queryString = `INSERT INTO polls (
+      poll_unique_id,
+      creator_id,
+      creator_email,
+      created_at,
+      closes_at,
+      comments_active,
+      track_voter_name,
+      question_name,
+      question_description) 
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;`;
+    
+    const queryParams = [
+      generateUid(),
+      generateUid(),
+      poll.creator_email,
+      poll.created_at,
+      poll.closes_at,
+      poll.comments_active,
+      poll.track_voter_name,
+      poll.question_name,
+      poll.quesiton_description
+    ];
+    return db.query(queryString, queryParams)
+      .then(res => res.rows)
+      .catch(err => console.error('query error', err.stack));
+  };
+
+  const makeChoices = function(choice) {
+    const queryString = `INSERT INTO choices (
+      poll_id,
+      answer,
+      description)
+      VALUES ($1, $2, $3) RETURNING *;`;
+
+    const queryParams = [
+      choice.poll_id,
+      choice.answer,
+      choice.description
+    ];
+    return db.query(queryString, queryParams)
+      .then(res => res.rows)
+      .catch(err => console.error('query error', err.stack));
+  };
 
   return router;
 };

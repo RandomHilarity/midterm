@@ -37,20 +37,6 @@ const timeDifference = function(current, previous) {
   }
 };
 
-$(document).ready(function() {
-  $('#vote').click(function() {
-    
-    let indexes = [];
-       
-    $('.uk-sortable').find('li').each(function(i) {
-      console.log(li);
-      $(this).data("index", i);
-      indexes.push(i);
-    });
-    console.log(indexes, " 2");
-  });
-});
-
 //adds additional choice field if last choice is focused
 $(document).ready(function() {
   let counter = 2;
@@ -65,3 +51,25 @@ $(document).ready(function() {
 const generateUid = function() {
   return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
 };
+
+/* $(document).ready(function() {
+  const $choicesContainer = $("#choices");
+  // const choicesContainer = document.querySelector("#choices")
+  const $choices = $choicesContainer.find(".choice-draggable");
+  // const choices = choicesContainer.querySelectorAll(".choice");
+
+  $choices.on("dragend", function(event) {
+    console.log(event, 'dragend');
+  });
+
+  const updateIndex = function($choice, index) {
+    const $input = $choice.find("input[type=hidden]:first");
+    if ($input.length > 0) {
+      $input.val(index);
+    } else {
+      throw new Error('no input to update');
+    }
+  };
+
+
+}); */

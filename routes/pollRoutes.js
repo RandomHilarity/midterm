@@ -32,7 +32,7 @@ module.exports = (db) => {
           question_description
         FROM polls
         WHERE creator_id = $1`;
-    const values = [p123456ollId];
+    const values = [pollId];
 
     return db.query(queryString, values)
       .then(res => {

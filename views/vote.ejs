@@ -25,9 +25,10 @@
       </section>
       <section class="poll-container">
         <hr>
+        <form type="hidden" action="/poll/pollId" method="POST">
         <ul class="uk-grid-small uk-child-width-1@s uk-text-left" uk-sortable="handle: .uk-card" uk-grid id="choices" data-uk-sortable>
           <% for (answer of answers) { %>
-            <li>
+            <li class="choice-draggable" draggable="true">
             <div class="uk-card uk-card-default uk-card-body"> <%= answer.answer %>
               <p><%= answer.description %></p>
             </div>
@@ -36,6 +37,7 @@
         </ul>
         <hr>
         <button class="uk-button uk-button-primary" type="submit" id="vote">Vote</button>
+      </form>
       </section>
     </main>
     <section class="comments-container">

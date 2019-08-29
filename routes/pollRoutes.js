@@ -32,7 +32,7 @@ module.exports = (db) => {
           question_description
         FROM polls
         WHERE creator_id = $1`;
-    const values = [pollId];
+    const values = [p123456ollId];
 
     return db.query(queryString, values)
       .then(res => {
@@ -150,35 +150,32 @@ module.exports = (db) => {
   };
 
   const makePoll = function(poll) {
+
+    const userId = generateUid();
+    const creatorId = generateUid();
+
+    console.log(userId, "userId");
+    console.log(creatorId, "creatorId");
+
     const queryString = `INSERT INTO polls (
       poll_unique_id,
       creator_id,
       creator_email,
-      created_at,
-      closes_at,
-      comments_active,
-      track_voter_name,
-      question_name,
-      question_description) 
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;`;
+      question) 
+      VALUES ($1, $2, $3, $4) RETURNING *;`;
     
     const queryParams = [
-      poll.userId,
-      poll.creatorId,
-      poll.creator_email,
-      poll.created_at,
-      poll.closes_at,
-      poll.comments_active,
-      poll.track_voter_name,
-      poll.question_name,
-      poll.quesiton_description
+      userId,
+      creatorId,
+      poll.creatorEmail,
+      poll.question
     ];
     return db.query(queryString, queryParams)
       .then(res => res.rows)
       .catch(err => console.error('query error', err.stack));
   };
 
-  const makeChoices = function(choice) {
+  const makeChoices = function(choice, pollId) {
     const queryString = `INSERT INTO choices (
       poll_id,
       answer,
@@ -186,23 +183,56 @@ module.exports = (db) => {
       VALUES ($1, $2, $3) RETURNING *;`;
 
     const queryParams = [
-      choice.poll_id,
+      pollId,
       choice.answer,
       choice.description
     ];
     return db.query(queryString, queryParams)
-      .then(res => res.rows)
+      .then(res => res)
       .catch(err => console.error('query error', err.stack));
   };
 
+  //handles post requests for new polls
   router.post("/make", (req, res) => {
-    console.log('pressed button!');
-    console.log(req.body, " body");
-    let pollId = generateUid();
-    let creatorId = generateUid();
+    let count = 0;
 
+    for (let key in req.body) {
+      if (key.match(/choice/i)) {
+        count ++;
+      }
+    }
+
+    const finalArray = [];
+    const formVariable = req.body;
+
+    for (let i = 0; i < count; i++) {
+      const obj = {};
+
+      const choiceText  = "choice" + i;
+      const choiceDescription = "choice" + i + "desc";
+      const formChoiceValue = formVariable[choiceText];
+      const formDescriptionValue = formVariable[choiceDescription];
+
+      obj["answer"] = formChoiceValue;
+      obj["description"] = formDescriptionValue;
+      obj["answer"] !== "" && obj["answer"] !== undefined ? finalArray.push(obj) : "";
+    }
+
+    console.log(finalArray, " finalArray");
+
+    makePoll(req.body)
+      .then(res => {
+        for (let choice of finalArray) {
+          makeChoices(choice, res[0].id);
+        }
+        return res[0].creator_id;
+      })
+      .then(data => {
+        console.log(data, "data");
+        res.redirect(`/poll/${data}`);
+      })
+      .catch(err => console.error('query error', err.stack));
   });
-  
 
   return router;
 };

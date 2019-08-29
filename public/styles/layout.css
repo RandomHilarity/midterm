@@ -48,7 +48,8 @@ body {
 .description {
   border: none;
   margin-left: 1em;
-  font-size: 18px; 
+  font-size: 18px;
+  width: 70%; 
 }
 
 .poll-container {

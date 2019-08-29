@@ -1,15 +1,16 @@
 html {
-  background-color: #4287f5;
+  background-color: #323232;
 }
 
 header {
-  color: #ffffff;
+  color: #ff0000;
   font-family: Helvetica;
   font-size: 48px;
   font-weight: 1000;
   line-height: 0.69;
   margin: 0;
   padding-top: 50px;
+  padding-bottom: 50px;
   text-align: center;
 }
 
@@ -35,13 +36,14 @@ body {
 
 .main-question {
   border: none;
-  border-bottom: solid #ababab 4px;
+  border-bottom: solid #ffbcbc 3px;
   margin-bottom: 1em;
+  padding-bottom: 5px;
 }
 
 .choice {
   border: none;
-  border-bottom: solid #ababab 2px;
+  border-bottom: solid #ffbcbc 2px;
   width: 70%;
 }
 
@@ -49,7 +51,7 @@ body {
   border: none;
   margin-left: 1em;
   font-size: 18px;
-  width: 70%; 
+  width: 90%;
 }
 
 .poll-container {
@@ -61,13 +63,22 @@ body {
 .email {
   font-size: 18px;
   border: 0;
-  border-bottom: solid #ababab 2px;
+  border-bottom: solid #ffbcbc 2px;
   width: 70%;
   margin-bottom: 1em;
 }
 
 .uk-button {
   border-radius: 5px;
+  background-color: #fe0001;
+}
+
+.uk-button-primary:hover {
+  background-color: #cb0000;
+}
+
+.uk-input:focus {
+  border-color: #fe0001;
 }
 
 .questions-footer {

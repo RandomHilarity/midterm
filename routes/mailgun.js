@@ -5,10 +5,12 @@ const mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
  
 const pollCreated = {
   from: 'Devon <devon.blake@live.com>',
-  to: 'devon.blake@live.com',
-  subject: 'Hello world',
-  text: 'Testing some Mailgun awesomeness!'
+  to: 'devon.blake@live.com', //recipient
+  subject: `${title} poll Created`,
+  text: `Administrative Link: https://strawberry-crumble-41481.herokuapp.com/admin/${admin}\nVoter Link: https://strawberry-crumble-41481.herokuapp.com/user/${user}`
 };
+
+//module.exports = (recipient, title)
  
 mailgun.messages().send(pollCreated, function (error, body) {
   if (error) {

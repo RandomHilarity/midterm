@@ -1,5 +1,5 @@
 html {
-  background-color: #666;
+  background-color: #323232;
 }
 
 header {
@@ -36,20 +36,22 @@ body {
 
 .main-question {
   border: none;
-  border-bottom: solid #ababab 4px;
+  border-bottom: solid #ffbcbc 3px;
   margin-bottom: 1em;
+  padding-bottom: 5px;
 }
 
 .choice {
   border: none;
-  border-bottom: solid #ababab 2px;
+  border-bottom: solid #ffbcbc 2px;
   width: 70%;
 }
 
 .description {
   border: none;
   margin-left: 1em;
-  font-size: 18px; 
+  font-size: 18px;
+  width: 90%;
 }
 
 .poll-container {
@@ -61,14 +63,22 @@ body {
 .email {
   font-size: 18px;
   border: 0;
-  border-bottom: solid #ababab 2px;
+  border-bottom: solid #ffbcbc 2px;
   width: 70%;
   margin-bottom: 1em;
 }
 
 .uk-button {
   border-radius: 5px;
-  background-color: #ff0000
+  background-color: #fe0001;
+}
+
+.uk-button-primary:hover {
+  background-color: #cb0000;
+}
+
+.uk-input:focus {
+  border-color: #fe0001;
 }
 
 .questions-footer {

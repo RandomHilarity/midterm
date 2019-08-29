@@ -1,8 +1,8 @@
 -- Users table seeds here (Example)
-INSERT INTO polls (id, poll_unique_id, creator_id, creator_email, question, question_description) VALUES 
-  (1, '123456', 1, 'Light.house@gmail.com', 'How much wood can a woodchuck chuck?', 'This question has perplexed humans for years lets put a final stop to this'),
-  (2 ,'rshf25', 2, 'malesuada.id@nisidictum.ca', 'What is the meaning of life?', 'description'),
-  (3, 'dyr23e' , 3, 'fermentum@cool.co.uk', 'Whats your favorite food?', 'We will order in for tomorrow');
+INSERT INTO polls (poll_unique_id, creator_id, creator_email, question, question_description) VALUES 
+  ('123456', 1, 'Light.house@gmail.com', 'How much wood can a woodchuck chuck?', 'This question has perplexed humans for years lets put a final stop to this'),
+  ('rshf25', 2, 'malesuada.id@nisidictum.ca', 'What is the meaning of life?', 'description'),
+  ('dyr23e' , 3, 'fermentum@cool.co.uk', 'Whats your favorite food?', 'We will order in for tomorrow');
 
 
 INSERT INTO choices (id, poll_id, answer, description) VALUES 

@@ -57,7 +57,7 @@ $(document).ready(function() {
   $('#questions').on('focus', '.choice:last', function() {
     counter++;
     $('#questions').append($(`<input class="uk-input choice" type="text" placeholder="Choice #${counter}" maxlength="200" name="choice${counter}">`).hide().fadeIn(1000));
-    $('#questions').append($(`<input class="uk-input description" type="text" placeholder="Enter an optional description" maxlength="200" name="choice${counter}desc>`).hide().fadeIn(1000));
+    $('#questions').append($(`<input class="uk-input description" type="text" placeholder="Enter an optional description" maxlength="200" name="choice${counter}desc">`).hide().fadeIn(1000));
   });
 });
   

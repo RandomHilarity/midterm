@@ -66,6 +66,7 @@ module.exports = (db) => {
   const getAnswers = function(pollId) {
     const queryString = `
         SELECT 
+            choices.id,
             answer,
             description,
             times_answered,
@@ -218,8 +219,6 @@ module.exports = (db) => {
       obj["answer"] !== "" && obj["answer"] !== undefined ? finalArray.push(obj) : "";
     }
 
-    console.log(finalArray, " finalArray");
-
     makePoll(req.body)
       .then(res => {
         for (let choice of finalArray) {
@@ -228,11 +227,45 @@ module.exports = (db) => {
         return res[0].creator_id;
       })
       .then(data => {
-        console.log(data, "data");
         res.redirect(`/poll/${data}`);
       })
       .catch(err => console.error('query error', err.stack));
   });
 
+  const makeVote = function(vote) {
+    const queryString = `UPDATE choices SET 
+      times_answered = times_answered + 1,
+      total_score = total_score + $1
+      WHERE id = $2
+      RETURNING *;`;
+
+    const queryParams = [
+      vote.score,
+      vote.id
+    ];
+    return db.query(queryString, queryParams)
+      .then(res => res)
+      .catch(err => console.error('query error', err.stack));
+  };
+
+  // make a vote, adds scores to choices and redirects to voted page
+  router.post('/:pollId', (req, res) => {
+    let votes = JSON.parse(req.body.voteObj);
+    for (let vote of votes) {
+      makeVote(vote);
+    }
+    res.redirect("/voted");
+  });
+
   return router;
 };
+
+router.get('/voted', (req, res) => {
+  // get an error message or alert here
+  res.render('voted');
+});
+
+router.get('/:pollId/admin', (req, res) => {
+  // get an error message or alert here
+  res.render('/:pollId/admin');
+});

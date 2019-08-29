@@ -20,15 +20,16 @@
       MAJORITY Poll
     </header>
     <main class="main-container">
-      <section class="question-container">
+        <section class="question-container">
         <%= poll.question %>
       </section>
       <section class="poll-container">
         <hr>
-        <form type="hidden" action="/poll/pollId" method="POST">
-        <ul class="uk-grid-small uk-child-width-1@s uk-text-left" uk-sortable="handle: .uk-card" uk-grid id="choices" data-uk-sortable>
+        <form type="hidden" action="/poll/:pollId" method="POST">
+        <input id="voteObj" name="voteObj" type="hidden" value="">
+        <ul class="uk-grid-small uk-child-width-1@s uk-text-left sortable js-sortable" uk-sortable="handle: .uk-card" uk-grid id="choices" data-uk-sortable>
           <% for (answer of answers) { %>
-            <li class="choice-draggable" draggable="true">
+            <li class="choice-draggable list" draggable="true" id="<%= answer.id %>">
             <div class="uk-card uk-card-default uk-card-body"> <%= answer.answer %>
               <p><%= answer.description %></p>
             </div>
@@ -40,8 +41,8 @@
       </form>
       </section>
     </main>
-    <section class="comments-container">
-      COMMENTS
-    </section>
+<!--     <section class="comments-container">
+    COMMENTS
+    </section> -->
   </body>
 </html>

@@ -52,24 +52,16 @@ const generateUid = function() {
   return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
 };
 
-/* $(document).ready(function() {
-  const $choicesContainer = $("#choices");
-  // const choicesContainer = document.querySelector("#choices")
-  const $choices = $choicesContainer.find(".choice-draggable");
-  // const choices = choicesContainer.querySelectorAll(".choice");
-
-  $choices.on("dragend", function(event) {
-    console.log(event, 'dragend');
-  });
-
-  const updateIndex = function($choice, index) {
-    const $input = $choice.find("input[type=hidden]:first");
-    if ($input.length > 0) {
-      $input.val(index);
-    } else {
-      throw new Error('no input to update');
-    }
-  };
-
-
-}); */
+$(document).on('moved', '.uk-sortable', function() {
+  const list = document.getElementsByClassName("list");
+  const choicePositions = [];
+  for (let i = 0; i < list.length - 1; ++i) {
+    let choiceObj = {};
+    choiceObj["id"] = list[i].id;
+    choiceObj["score"] = list.length - i - 1;
+    choicePositions.push(choiceObj);
+  }
+  let stringArr = JSON.stringify(choicePositions);
+  $("#voteObj").attr("value", stringArr);
+  console.log(choicePositions);
+});

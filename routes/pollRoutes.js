@@ -233,6 +233,8 @@ module.exports = (db) => {
   });
 
   const makeVote = function(vote) {
+
+    console.log(vote);
     const queryString = `UPDATE choices SET 
       times_answered = times_answered + 1,
       total_score = total_score + $1
@@ -249,23 +251,26 @@ module.exports = (db) => {
   };
 
   // make a vote, adds scores to choices and redirects to voted page
-  router.post('/:pollId', (req, res) => {
+  router.post('/:pollId', async(req, res) => {
     let votes = JSON.parse(req.body.voteObj);
+    let votePromises = [];
     for (let vote of votes) {
-      makeVote(vote);
+      votePromises.push(makeVote(vote));
     }
-    res.redirect("/voted");
+    
+    const savedVotes = await Promise.all(votePromises);
+    return res.redirect("/voted");
+  });
+  
+  router.get('/voted', (req, res) => {
+    // get an error message or alert here
+    res.render('voted');
+  });
+    
+  router.get('/:pollId/admin', (req, res) => {
+    // get an error message or alert here
+    res.render('admin');
   });
 
   return router;
 };
-
-router.get('/voted', (req, res) => {
-  // get an error message or alert here
-  res.render('voted');
-});
-
-router.get('/:pollId/admin', (req, res) => {
-  // get an error message or alert here
-  res.render('/:pollId/admin');
-});

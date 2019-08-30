@@ -145,6 +145,7 @@ module.exports = (db) => {
       });
   });
 
+  //goes to poll creation if no admin or voting pollIds are found
   router.get('/:pollId', (req, res) => {
     // get an error message or alert here
     res.redirect('/');
@@ -158,9 +159,6 @@ module.exports = (db) => {
 
     const userId = generateUid();
     const creatorId = generateUid();
-
-    console.log(userId, "userId");
-    console.log(creatorId, "creatorId");
 
     const queryString = `INSERT INTO polls (
       poll_unique_id,
@@ -238,7 +236,6 @@ module.exports = (db) => {
 
   const makeVote = function(vote) {
 
-    console.log(vote);
     const queryString = `UPDATE choices SET 
       times_answered = times_answered + 1,
       total_count = total_count + $1
@@ -285,20 +282,20 @@ module.exports = (db) => {
       .catch(err => console.error('Error:', err.stack));
   };
 
+  // route to chart and results
   router.get('/:pollId/admin', (req, res) => {
     const pollId = req.params.pollId;
     pollTotals(pollId)
       .then(data => {
-        console.log(data, " data");
         res.render('admin', {data: data});
       });
   });
 
+  //request to database for choices data for poll, used for chart
   router.get('/:pollId/json', (req, res) => {
     const pollId = req.params.pollId;
     pollTotals(pollId)
       .then(data => {
-        console.log(data, " data");
         res.json(data);
       });
   });

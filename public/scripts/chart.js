@@ -1,31 +1,7 @@
 /*eslint-env jquery, browser*/
 
-/* window.onload = function () {
-	
-  let chart = new CanvasJS.Chart("chartContainer", {
-    animationEnabled: true,
-        
-    title:{
-      text:"Results (Total Score)"
-    },
-    axisX:{
-      interval: 1
-    },
-    data: [{
-      type: "bar",
-      name: "companies",
-      axisYType: "secondary",
-      color: "#014D65",
-      dataPoints: [
-        { y: 20, label: "Pizza" },
-        { y: 10, label: "Sushi" },
-        { y: 30, label: "Pho" }
-      ]
-    }]
-  });
-  chart.render();
-     
-}; */
+// gets poll data from provided data and generates chart
+
 const getPollData = function(callback) {
   const href = window.location.href;
   const hrefArray = href.split('/');
@@ -47,31 +23,26 @@ const getPollData = function(callback) {
 };
 
 const showChart = function(dataPoints) {
-    const chart = new CanvasJS.Chart("chartContainer", {
-        animationEnabled: true,
+  const chart = new CanvasJS.Chart("chartContainer", {
+    animationEnabled: true,
               
-        title:{
-          text:"Results (Total Score)"
-        },
-        axisX:{
-          interval: 1
-        },
-        data: [{
-          type: "bar",
-          name: "companies",
-          axisYType: "secondary",
-          color: "#014D65",
-          dataPoints
-        }]
-      });
-      chart.render();
+    title:{
+      text:"Results (Total Score)"
+    },
+    axisX:{
+      interval: 1
+    },
+    data: [{
+      type: "bar",
+      name: "companies",
+      axisYType: "secondary",
+      color: "#014D65",
+      dataPoints
+    }]
+  });
+  chart.render();
 };
 
 window.onload = function () {
-    getPollData(showChart);
+  getPollData(showChart);
 };
-
-/*   window.onload = function(){
-    chart.data[0].addTo("dataPoints", {x: chart.data[0].dataPoints[chart.data[0].dataPoints.length-1].x + 10, y: Math.random() * (100 - 10) + 10})
-     });
-} */

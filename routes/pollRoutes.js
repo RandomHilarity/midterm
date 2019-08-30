@@ -144,7 +144,6 @@ module.exports = (db) => {
     // get an error message or alert here
     res.redirect('/');
   });
-
   // creates random 6-character key
   const generateUid = function() {
     return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
@@ -237,7 +236,7 @@ module.exports = (db) => {
     console.log(vote);
     const queryString = `UPDATE choices SET 
       times_answered = times_answered + 1,
-      total_score = total_score + $1
+      total_count = total_count + $1
       WHERE id = $2
       RETURNING *;`;
 
@@ -266,10 +265,33 @@ module.exports = (db) => {
     // get an error message or alert here
     res.render('voted');
   });
-    
+  
+  const pollTotals = function(adminPollId) {
+    const queryString = `
+      SELECT
+        answer,
+        times_answered,
+        total_count
+        FROM choices
+        JOIN polls ON polls.id = choices.poll_id
+      WHERE polls.creator_id = $1`;
+    const values = [adminPollId];
+
+    return db.query(queryString, values)
+      .then(res => {
+        return res.rows;
+      })
+      .catch(err => console.error('Error:', err.stack));
+  };
+
   router.get('/:pollId/admin', (req, res) => {
-    // get an error message or alert here
-    res.render('admin');
+    const pollId = req.params.pollId;
+    console.log(pollId, " pollId");
+    pollTotals(pollId)
+      .then(data => {
+        console.log(data, " data");
+        res.render('admin', data);
+      });
   });
 
   return router;

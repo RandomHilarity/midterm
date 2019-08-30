@@ -47,3 +47,7 @@ This is a midterm exercise for Lighthouse Labs and not intended for production.
 
 * **John Webster** - *Some HTML, some CSS, some SQL, all JS* - [RandomHilarity](https://github.com/RandomHilarity)
 * **Devon Blake** - *Mailgun, some HTML, some CSS, some SQL* - [itsCharisma](https://github.com/itsCharisma)
+
+## Addtitional Notes
+
+Tracking user names, IPs and user comments are stretch work and are not currently not active

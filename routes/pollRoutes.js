@@ -13,6 +13,11 @@ const router  = express.Router();
 
 module.exports = (db) => {
 
+  router.get('/voted', (req, res) => {
+    // get an error message or alert here
+    res.render('voted');
+  });
+  
   // temporary route to vote page
   router.get("/make", (req, res) => {
     console.log('I got to / in pollRoutes');
@@ -258,17 +263,13 @@ module.exports = (db) => {
     }
     
     const savedVotes = await Promise.all(votePromises);
-    return res.redirect("/voted");
-  });
-  
-  router.get('/voted', (req, res) => {
-    // get an error message or alert here
-    res.render('voted');
+    return res.redirect("voted");
   });
   
   const pollTotals = function(adminPollId) {
     const queryString = `
       SELECT
+        polls.question,
         answer,
         times_answered,
         total_count
@@ -286,13 +287,20 @@ module.exports = (db) => {
 
   router.get('/:pollId/admin', (req, res) => {
     const pollId = req.params.pollId;
-    console.log(pollId, " pollId");
     pollTotals(pollId)
       .then(data => {
         console.log(data, " data");
-        res.render('admin', data);
+        res.render('admin', {data: data});
       });
   });
 
+  router.get('/:pollId/json', (req, res) => {
+    const pollId = req.params.pollId;
+    pollTotals(pollId)
+      .then(data => {
+        console.log(data, " data");
+        res.json(data);
+      });
+  });
   return router;
 };

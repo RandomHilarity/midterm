@@ -11,40 +11,28 @@
 
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
-    <script type="text/javascript" src="/scripts/uikit.min.js"></script>
-    <script type="text/javascript" src="/scripts/uikit-icons.min.js"></script>
+    <script tyoe="text/javascript" src="/scripts/chart.js"></script>
+    <script type="text/javascript" src="/vendor/uikit.min.js"></script>
+    <script type="text/javascript" src="/vendor/uikit-icons.min.js"></script>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
   </head>
 
   <body>
     <header>
       MAJORITY POLL
     </header>
-    <div>
-<div class="uk-progress" value="10" max="100">
-  <div class="progressfluid">
-    <span class="Progressnumber">10</span>
-  </div>
-  
-</div> 
-    </div>
     <main class="main-container">
       <section class="question-container">
-        How much wood could a woodchuck chuck?
+        <%= data[0].question %>
       </section>
       <section class="poll-container">
         <hr>
-            <li>
-                <div class="uk-card uk-card-default uk-card-body">Item 2</div>
-              </li>
-          <li>
-
-          </li>
-        </ul>
+        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
         <hr>
       </section>
-      <section class="comments-container">
+<!--       <section class="comments-container">
         COMMENTS
-      </section>
+      </section> -->
     </main>
   </body>
 </html>
